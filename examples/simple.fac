@@ -1,0 +1,7 @@
+in chest_1;
+in chest_2;
+
+out inserter_1;
+out inserter_2;
+
+inserter_1.copper = in1.copper - (in_2.copper ? in_2.copper : const<copper>(1) )
