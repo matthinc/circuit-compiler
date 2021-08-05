@@ -1,5 +1,5 @@
-module Codegen.Json where
-    import qualified Codegen.Data as Data
+module CircComp.Json where
+    import qualified CircComp.Data as Data
     import Data.List
 
     exportBlueprint :: Data.Blueprint -> String
@@ -26,8 +26,9 @@ module Codegen.Json where
         where   entity_id = Data.id entity
                 inbound = "\"1\": {\"red\":[" ++ inboundRed ++ "], \"green\":[]}"
                 inboundRed = intercalate ","
-                    $ map (\c -> "{\"entity_id\":" ++ show (Data.id_from c) ++ ", \"circuit_id\":2}")
+                    $ map (\c -> "{\"entity_id\":" ++ show (Data.id_from c) ++ inboundCircuitId c)
                     $ filter (\c -> Data.id_to c == entity_id && Data.id_from c >= 0 && Data.color c == Data.Red ) connections
+                inboundCircuitId c = if Data.multiSource c then ", \"circuit_id\":2}" else "}"
                 outbound = "\"2\": {\"red\":[" ++ outboundRed ++ "], \"green\":[]}"
                 outboundRed = intercalate ","
                     $ map (\c -> "{\"entity_id\":" ++ show (Data.id_to c) ++ outboundCircuitId c)
@@ -40,6 +41,7 @@ module Codegen.Json where
         Data.DC c -> exportDeciderCombinator c
         Data.CC c -> exportConstantCombinator c
         Data.LA c -> exportLamp c
+        Data.CE c -> exportChest c
 
     exportArithmeticCombinator :: Data.ArithmeticCombinator -> String
     exportArithmeticCombinator c = "\"control_behavior\": { \"arithmetic_conditions\": {"
@@ -59,6 +61,9 @@ module Codegen.Json where
         ++ "\"use_colors\":true"
         ++ "},"
         ++ "\"name\":\"small-lamp\""
+
+    exportChest :: Data.Chest -> String
+    exportChest c = "\"name\":\"steel-chest\""
 
     exportDeciderCombinator :: Data.DeciderCombinator -> String
     exportDeciderCombinator c = "\"control_behavior\": { \"decider_conditions\": {"

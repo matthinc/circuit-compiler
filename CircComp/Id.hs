@@ -1,7 +1,7 @@
-module Codegen.Id where
+module CircComp.Id where
     import Data.Maybe
     import Data.List
-    import qualified Codegen.Data as Data
+    import qualified CircComp.Data as Data
 
     updateGroupIds :: Data.Group -> Data.Group
     updateGroupIds group = Data.Group entitiesWithIds connectionsWithIds

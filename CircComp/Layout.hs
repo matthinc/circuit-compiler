@@ -1,5 +1,5 @@
-module Codegen.Layout where
-    import qualified Codegen.Data as Data
+module CircComp.Layout where
+    import qualified CircComp.Data as Data
     import Data.List (nub, sort)
 
     layerHeight :: Integer

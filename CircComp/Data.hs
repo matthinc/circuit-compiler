@@ -1,4 +1,4 @@
-module Codegen.Data where
+module CircComp.Data where
 
     data Color = Red | Green
         deriving (Show, Eq)
@@ -14,17 +14,21 @@ module Codegen.Data where
         id_from_temp :: String,
         id_to_temp:: String,
         color :: Color,
-        multiTarget :: Bool
+        multiTarget :: Bool,
+        multiSource :: Bool
     } deriving (Show)
 
     makeRedConnection :: String -> String -> Connection
-    makeRedConnection inp outp = Connection (-1) (-1) inp outp Red True
+    makeRedConnection inp outp = Connection (-1) (-1) inp outp Red True True
 
     makeRedSingleConnection :: String -> String -> Connection
-    makeRedSingleConnection inp outp = Connection (-1) (-1) inp outp Red False
+    makeRedSingleConnection inp outp = Connection (-1) (-1) inp outp Red False True
+
+    makeRedConnectionToSingle :: String -> String -> Connection
+    makeRedConnectionToSingle inp outp = Connection (-1) (-1) inp outp Red True False
 
     makeRedConnectionGroup :: String -> String -> Group
-    makeRedConnectionGroup inp outp = Group [] [Connection (-1) (-1) inp outp Red True]
+    makeRedConnectionGroup inp outp = Group [] [Connection (-1) (-1) inp outp Red True True]
 
     data ArithmeticCombinator = ArithmeticCombinator {
         operation :: String,
@@ -36,6 +40,8 @@ module Codegen.Data where
     newtype Lamp = Lamp {
         lsignal :: Signal
     } deriving (Show)
+
+    data Chest = Chest deriving (Show)
 
     data DeciderCombinator = DeciderCombinator {
         dcomparator :: String,
@@ -57,7 +63,7 @@ module Codegen.Data where
         stype :: SignalType
     } deriving (Show)
 
-    data EntityType = AC ArithmeticCombinator | DC DeciderCombinator | CC ConstCombinator | LA Lamp
+    data EntityType = AC ArithmeticCombinator | DC DeciderCombinator | CC ConstCombinator | LA Lamp | CE Chest
          deriving (Show)
 
     data Entity = Entity {
